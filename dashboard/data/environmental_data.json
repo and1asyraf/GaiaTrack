@@ -1,0 +1,83 @@
+{
+    "data_points": [
+        {
+            "timestamp": "2024-03-20 08:00:00",
+            "air_quality": 85,
+            "co2_level": 420,
+            "temperature": 22.5,
+            "noise_level": 65,
+            "humidity": 45,
+            "particulate_matter": 12
+        },
+        {
+            "timestamp": "2024-03-20 08:15:00",
+            "air_quality": 82,
+            "co2_level": 435,
+            "temperature": 23.0,
+            "noise_level": 68,
+            "humidity": 46,
+            "particulate_matter": 15
+        },
+        {
+            "timestamp": "2024-03-20 08:30:00",
+            "air_quality": 80,
+            "co2_level": 450,
+            "temperature": 23.5,
+            "noise_level": 70,
+            "humidity": 47,
+            "particulate_matter": 18
+        },
+        {
+            "timestamp": "2024-03-20 08:45:00",
+            "air_quality": 78,
+            "co2_level": 465,
+            "temperature": 24.0,
+            "noise_level": 72,
+            "humidity": 48,
+            "particulate_matter": 20
+        },
+        {
+            "timestamp": "2024-03-20 09:00:00",
+            "air_quality": 75,
+            "co2_level": 480,
+            "temperature": 24.5,
+            "noise_level": 75,
+            "humidity": 49,
+            "particulate_matter": 22
+        }
+    ],
+    "metadata": {
+        "location": "Factory Floor A",
+        "sensor_id": "ENV-SENSOR-001",
+        "measurement_units": {
+            "air_quality": "AQI",
+            "co2_level": "ppm",
+            "temperature": "°C",
+            "noise_level": "dB",
+            "humidity": "%",
+            "particulate_matter": "μg/m³"
+        },
+        "thresholds": {
+            "air_quality": {
+                "good": ">= 75",
+                "moderate": "50-74",
+                "poor": "< 50"
+            },
+            "co2_level": {
+                "good": "<= 450",
+                "moderate": "451-600",
+                "poor": "> 600"
+            },
+            "temperature": {
+                "optimal": "20-25",
+                "warning": "26-30",
+                "critical": "> 30"
+            },
+            "noise_level": {
+                "safe": "<= 65",
+                "moderate": "66-75",
+                "high": "> 75"
+            }
+        }
+    }
+} 

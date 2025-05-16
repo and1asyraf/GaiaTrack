@@ -1,0 +1,50 @@
+Introduction 
+This project proposes GaiaTrack, an AI-powered Environmental Monitoring Dashboard designed to help factories to monitor air quality and carbon emissions in real-time. With rising global concerns about sustainability, factories are under increasing pressure to track and reduce their environmental footprint.  
+
+GaiaTrack will visualize both real-time and historical environmental data, generate smart insights using AI, and support automated sustainability reporting. This system empowers factories to align with key Sustainable Development Goals (SDGs) such as: 
+Climate Action (SDG 13)
+Good Health & Well-being (SDG 3)
+Responsible Consumption and Production (SDG 12) 
+
+Key Features : 
+Real-time air quality and CO₂ tracking
+Automated alerts for unsafe environmental conditions
+AI-powered insights and future trend predictions
+One-click generation of sustainability reports 
+
+The project will utilize HTML, CSS, and JS for the frontend to provide a responsive user interface. The backend will be built using Flask to handle data processing and storage. AI and machine learning components will leverage simple Python models or pre-trained APIs to generate insights. Environmental data will be managed using mock JSON or simulated IoT inputs for real-time simulation. Deployment will be carried out on Render. 
+
+Problem Statement
+Many factories, especially small and medium-sized ones, struggle to monitor their environmental performance due to limited access to real-time data and the complexity of sustainability reporting requirements, resulting in missed opportunities to reduce carbon emissions [1], 
+Inability to ensure consistent employee health and safety [2], 
+and Difficulty in meeting ESG (Environmental, Social, Governance) goals [3]. 
+The lack of accessible and user-friendly tools for real-time environmental monitoring makes it difficult for smaller factories to contribute meaningfully to global climate efforts. For example, WHO data shows that 99% of the world’s population breathes polluted air, highlighting the importance of air quality monitoring in factories [4]. 
+
+Aim and Objectives 
+- GaiaTrack aims to provide an AI-driven dashboard that enables factories to monitor environmental data, ensure workplace safety, and support sustainability reporting.
+
+Objectives:
+- To design a responsive and intuitive dashboard interface that presents key environmental metrics—such as air quality, temperature, and noise levels—in a visually engaging and easily interpretable format.
+- To simulate real-time environmental data streams using mock sensors or APIs, allowing users to experience dynamic updates and visualize evolving conditions over time.
+- To implement basic AI models that analyze historical data trends, predict potential environmental risks, and support proactive decision-making for factory sustainability.
+- To generate automated sustainability reports in downloadable formats (PDF/CSV) that summarize key insights, compliance statuses, and recommended actions for improving ESG performance.
+
+
+ Methodology 
+ 4.1 Implementation  
+Prototype Development: Create mock data and UI wireframes
+
+Implementation: Build the frontend of GaiaTrack and backend logic
+
+Testing & Refinement: Simulate real-time updates, test AI-generated alerts, and enhance UX based on feedback 
+
+ 4.2 Tech Stack 
+Frontend: HTML, CSS, and JS
+
+Backend: Django (Python-based)
+
+Database:  SQLitee
+
+AI/ML: Python (for basic forecasting and rule-based alerting)
+
+Deployment: Render 

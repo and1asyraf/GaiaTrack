@@ -1,0 +1,381 @@
+{% extends 'base.html' %}
+
+{% block title %}Environmental Dashboard - GaiaTrack{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Environmental Monitoring Dashboard</h1>
+        <div class="date-time">
+            <span class="text-muted">Last Updated: <span id="current-time">Loading...</span></span>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="row">
+        <!-- Left Column - Main Monitoring -->
+        <div class="col-md-8">
+            <!-- Real-time Metrics -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Real-time Environmental Metrics</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="metric-card p-3 border rounded">
+                                <h6>Air Quality Index</h6>
+                                <h3 id="air-quality">--</h3>
+                                <small id="air-quality-status" class="text-success">Loading...</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="metric-card p-3 border rounded">
+                                <h6>CO₂ Level</h6>
+                                <h3 id="co2-level">-- ppm</h3>
+                                <small id="co2-status" class="text-warning">Loading...</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="metric-card p-3 border rounded">
+                                <h6>Temperature</h6>
+                                <h3 id="temperature">--°C</h3>
+                                <small id="temp-status" class="text-info">Loading...</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="metric-card p-3 border rounded">
+                                <h6>Noise Level</h6>
+                                <h3 id="noise-level">-- dB</h3>
+                                <small id="noise-status" class="text-warning">Loading...</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AQI Prediction Form -->
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">AQI Prediction</h5>
+                </div>
+                <div class="card-body">
+                    <form id="aqi-prediction-form" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="temperature" class="form-label">Temperature (°C)</label>
+                                <input type="number" class="form-control" id="temperature" name="temperature" step="0.01" min="0" max="50" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="humidity" class="form-label">Humidity (%)</label>
+                                <input type="number" class="form-control" id="humidity" name="humidity" step="0.01" min="0" max="100" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="co2" class="form-label">CO2 (ppm)</label>
+                                <input type="number" class="form-control" id="co2" name="co2" step="0.01" min="0" max="2000" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="pm2_5" class="form-label">PM2.5 (μg/m³)</label>
+                                <input type="number" class="form-control" id="pm2_5" name="pm2_5" step="0.01" min="0" max="500" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="pm10" class="form-label">PM10 (μg/m³)</label>
+                                <input type="number" class="form-control" id="pm10" name="pm10" step="0.01" min="0" max="500" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="noise" class="form-label">Noise Level (dB)</label>
+                                <input type="number" class="form-control" id="noise" name="noise" step="0.01" min="0" max="120" required>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-calculator me-2"></i>Predict AQI
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Data Visualization -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Environmental Trends</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-placeholder" style="height: 300px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center;">
+                        <p class="text-muted">Chart will be implemented here</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column - Insights & Results -->
+        <div class="col-md-4">
+            <!-- Prediction Result -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">Prediction Result</h5>
+                </div>
+                <div class="card-body">
+                    <div id="prediction-result" class="alert alert-info" style="display: none;">
+                        <h4 class="alert-heading">Predicted AQI</h4>
+                        <p id="predicted-aqi" class="h2 mb-3"></p>
+                        <hr>
+                        <p id="aqi-category" class="mb-0"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Insights -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">AI Insights</h5>
+                </div>
+                <div class="card-body">
+                    <div class="insight-item mb-3">
+                        <h6><i class="fas fa-lightbulb text-warning me-2"></i>Current Status</h6>
+                        <p id="current-status" class="mb-0">Analyzing data...</p>
+                    </div>
+                    <div class="insight-item">
+                        <h6><i class="fas fa-chart-line text-primary me-2"></i>Trend Analysis</h6>
+                        <p id="trend-analysis" class="mb-0">Calculating trends...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="card-title mb-0">Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary">
+                            <i class="fas fa-file-pdf me-2"></i>Generate Report
+                        </button>
+                        <button class="btn btn-outline-warning">
+                            <i class="fas fa-bell me-2"></i>Set Alerts
+                        </button>
+                        <button class="btn btn-outline-info">
+                            <i class="fas fa-download me-2"></i>Export Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Function to update date and time
+    function updateDateTime() {
+        const now = new Date();
+        document.getElementById('current-time').textContent = now.toLocaleString();
+    }
+    
+    // Function to get status class based on value and type
+    function getStatusClass(value, type) {
+        switch(type) {
+            case 'air_quality':
+                return value >= 75 ? 'text-success' : value >= 50 ? 'text-warning' : 'text-danger';
+            case 'co2':
+                return value <= 450 ? 'text-success' : value <= 600 ? 'text-warning' : 'text-danger';
+            case 'temperature':
+                return value >= 20 && value <= 25 ? 'text-success' : 'text-warning';
+            case 'noise':
+                return value <= 65 ? 'text-success' : value <= 75 ? 'text-warning' : 'text-danger';
+            default:
+                return 'text-secondary';
+        }
+    }
+
+    // Function to get status text based on value and type
+    function getStatusText(value, type) {
+        switch(type) {
+            case 'air_quality':
+                return value >= 75 ? 'Good' : value >= 50 ? 'Moderate' : 'Poor';
+            case 'co2':
+                return value <= 450 ? 'Good' : value <= 600 ? 'Moderate' : 'High';
+            case 'temperature':
+                return value >= 20 && value <= 25 ? 'Optimal' : 'Needs Attention';
+            case 'noise':
+                return value <= 65 ? 'Good' : value <= 75 ? 'Moderate' : 'High';
+            default:
+                return 'Unknown';
+        }
+    }
+
+    // Function to update environmental data
+    function updateEnvironmentalData() {
+        console.log('Fetching environmental data...');  // Debug log
+        fetch('/api/environmental-data/')
+            .then(response => {
+                console.log('Response status:', response.status);  // Debug log
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Received data:', data);  // Debug log
+                
+                // Update metrics
+                document.getElementById('air-quality').textContent = data.air_quality;
+                document.getElementById('co2-level').textContent = `${data.co2_level} ppm`;
+                document.getElementById('temperature').textContent = `${data.temperature}°C`;
+                document.getElementById('noise-level').textContent = `${data.noise_level} dB`;
+
+                // Update status indicators
+                const airQualityStatus = document.getElementById('air-quality-status');
+                const co2Status = document.getElementById('co2-status');
+                const tempStatus = document.getElementById('temp-status');
+                const noiseStatus = document.getElementById('noise-status');
+
+                airQualityStatus.className = getStatusClass(data.air_quality, 'air_quality');
+                co2Status.className = getStatusClass(data.co2_level, 'co2');
+                tempStatus.className = getStatusClass(data.temperature, 'temperature');
+                noiseStatus.className = getStatusClass(data.noise_level, 'noise');
+
+                airQualityStatus.textContent = getStatusText(data.air_quality, 'air_quality');
+                co2Status.textContent = getStatusText(data.co2_level, 'co2');
+                tempStatus.textContent = getStatusText(data.temperature, 'temperature');
+                noiseStatus.textContent = getStatusText(data.noise_level, 'noise');
+
+                // Update insights
+                const currentStatus = document.getElementById('current-status');
+                const trendAnalysis = document.getElementById('trend-analysis');
+                
+                // Generate insights based on the data
+                let statusMessage = '';
+                if (data.air_quality >= 75) {
+                    statusMessage = 'Air quality is excellent.';
+                } else if (data.air_quality >= 50) {
+                    statusMessage = 'Air quality is moderate.';
+                } else {
+                    statusMessage = 'Air quality needs attention.';
+                }
+
+                if (data.co2_level > 600) {
+                    statusMessage += ' CO₂ levels are high.';
+                } else if (data.co2_level > 450) {
+                    statusMessage += ' CO₂ levels are moderate.';
+                }
+
+                if (data.temperature < 20 || data.temperature > 25) {
+                    statusMessage += ' Temperature is outside optimal range.';
+                }
+
+                if (data.noise_level > 75) {
+                    statusMessage += ' Noise levels are high.';
+                }
+
+                currentStatus.textContent = statusMessage + ` Last updated: ${data.timestamp}`;
+
+                // Generate trend analysis
+                let trendMessage = '';
+                if (data.co2_level > 500) {
+                    trendMessage = 'CO₂ levels are elevated. Consider increasing ventilation.';
+                } else if (data.temperature > 25) {
+                    trendMessage = 'Temperature is trending high. Consider adjusting climate control.';
+                } else if (data.noise_level > 70) {
+                    trendMessage = 'Noise levels are above recommended limits. Consider noise reduction measures.';
+                } else {
+                    trendMessage = 'All metrics are within normal ranges.';
+                }
+                trendAnalysis.textContent = trendMessage;
+            })
+            .catch(error => {
+                console.error('Error fetching environmental data:', error);
+                // Show error state in the UI
+                document.getElementById('air-quality').textContent = 'Error';
+                document.getElementById('co2-level').textContent = 'Error';
+                document.getElementById('temperature').textContent = 'Error';
+                document.getElementById('noise-level').textContent = 'Error';
+                
+                document.getElementById('air-quality-status').textContent = 'Failed to load data';
+                document.getElementById('co2-status').textContent = 'Failed to load data';
+                document.getElementById('temp-status').textContent = 'Failed to load data';
+                document.getElementById('noise-status').textContent = 'Failed to load data';
+                
+                document.getElementById('current-status').textContent = 'Unable to fetch data. Please try again later.';
+                document.getElementById('trend-analysis').textContent = 'Data unavailable';
+            });
+    }
+
+    // Function to handle AQI prediction
+    document.getElementById('aqi-prediction-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        
+        // Show loading state
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalButtonText = submitButton.innerHTML;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Predicting...';
+        submitButton.disabled = true;
+        
+        fetch('/api/predict-aqi/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': csrfToken
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                const predictionResult = document.getElementById('prediction-result');
+                const predictedAqi = document.getElementById('predicted-aqi');
+                const aqiCategory = document.getElementById('aqi-category');
+                
+                predictedAqi.textContent = `AQI: ${data.prediction.toFixed(2)}`;
+                
+                // Determine AQI category
+                let category = '';
+                if (data.prediction <= 50) category = 'Good';
+                else if (data.prediction <= 100) category = 'Moderate';
+                else if (data.prediction <= 150) category = 'Unhealthy for Sensitive Groups';
+                else if (data.prediction <= 200) category = 'Unhealthy';
+                else if (data.prediction <= 300) category = 'Very Unhealthy';
+                else category = 'Hazardous';
+                
+                aqiCategory.textContent = `Category: ${category}`;
+                predictionResult.style.display = 'block';
+            } else {
+                throw new Error(data.error || 'Prediction failed');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const predictionResult = document.getElementById('prediction-result');
+            predictionResult.className = 'alert alert-danger';
+            predictionResult.innerHTML = `
+                <h4 class="alert-heading">Error</h4>
+                <p>${error.message || 'An error occurred while making the prediction. Please try again.'}</p>
+            `;
+            predictionResult.style.display = 'block';
+        })
+        .finally(() => {
+            // Reset button state
+            submitButton.innerHTML = originalButtonText;
+            submitButton.disabled = false;
+        });
+    });
+
+    // Update time every second
+    setInterval(updateDateTime, 1000);
+    updateDateTime(); // Initial call
+
+    // Update environmental data every 5 seconds
+    setInterval(updateEnvironmentalData, 5000);
+    updateEnvironmentalData(); // Initial call
+</script>
+{% endblock %} 

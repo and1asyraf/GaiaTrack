@@ -1,0 +1,13 @@
+Environmental_Data.csv has these columns:
+
+- timestamp
+- location
+- temperature (°C)
+- humidity (%)
+- co2 (ppm)
+- pm2_5 (µg/m³)
+- pm10 (µg/m³)
+- noise (dB)
+- aqi (Air Quality Index) 
+
+The machine learning should predicts the aqi based on the other numerical features (temperature, humidity, co2, pm2_5, pm10, noise). 
