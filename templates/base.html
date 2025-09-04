@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +38,11 @@
         <div class="row">
             <!-- Sidebar -->
             <div class="col-md-2 sidebar">
-                <h3 class="text-white text-center mb-4">GaiaTrack</h3>
+                <div class="text-center mb-4">
+                    <div style="background-color: white; padding: 10px; border-radius: 50%; margin: 10px; width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;">
+                        <img src="{% static 'img/GaiaLogo.png' %}" alt="GaiaTrack Logo" style="max-width: 80px; height: auto;">
+                    </div>
+                </div>
                 <nav>
                     <a href="{% url 'dashboard' %}"><i class="fas fa-home me-2"></i> Dashboard</a>
                     <!-- Add more sidebar items here -->

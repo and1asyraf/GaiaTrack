@@ -13,7 +13,7 @@ class Command(BaseCommand):
         
         # Get path to data
         csv_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 
-                               'data', 'environmental_data.csv')
+                               'data', 'test_environmental_data.csv')
         
         # Train model
         predictor.train(csv_path)

@@ -1,0 +1,11 @@
+When program is run, The landing page should be a login page. 
+
+The login page should have a username and password field.
+
+The login page should have a submit button.
+
+Example of a login credentials:
+    username: admin@company.com 
+    password: 123456
+
+

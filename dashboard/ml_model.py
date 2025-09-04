@@ -98,7 +98,7 @@ def initialize_model():
     predictor = AQIPredictor()
     
     # Get the path to the CSV file
-    csv_path = os.path.join(os.path.dirname(__file__), 'data', 'environmental_data.csv')
+    csv_path = os.path.join(os.path.dirname(__file__), 'data', 'test_environmental_data.csv')
     model_path = os.path.join(os.path.dirname(__file__), 'models', 'aqi_model.joblib')
     scaler_path = os.path.join(os.path.dirname(__file__), 'models', 'aqi_scaler.joblib')
     

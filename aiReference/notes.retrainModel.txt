@@ -1,0 +1,63 @@
+Retraining the ML Model : 
+Process of feeding new or updated environmental data (like air quality, humidity, temperature, etc.) 
+into the machine learning system so it can:
+- Learn new patterns,
+- Improve its predictions,
+- Stay relevant with recent trends.
+
+🧰 How Can Analysts Do This in GaiaTrack?
+As a software engineer, you’d build this feature into the UI so it’s intuitive:
+
+🔽 Step-by-Step (from Analyst's POV)
+1. Upload New Data (CSV File)
+- Analyst clicks “Upload Data” button.
+- Uploads a .csv (e.g., environmental_data_2025.csv).
+
+2. Click “Retrain Model”
+- A button triggers the training process.
+- Behind the scenes, it runs a Python script that:
+- Reads the new CSV,
+
+Cleans & prepares the data,
+
+Retrains the model using scikit-learn (or similar),
+
+Saves the updated model as a .pkl file.
+
+Get Feedback
+
+UI shows messages like:
+
+✅ Model retrained successfully!
+
+📉 Accuracy improved by 4.2%
+
+🕒 Training completed in 12 seconds
+
+Preview Model Accuracy
+
+Display a small summary:
+
+Training accuracy, testing accuracy, confusion matrix, etc.
+
+🔒 Optional Safeguards
+To keep it safe and effective:
+
+Only allow retraining from validated users (e.g., Admin, Analyst roles).
+
+Limit frequency (e.g., not more than once a day).
+
+Keep logs: who retrained it, when, using which data.
+
+🧑‍💻 What You Build in Backend (as Engineer)
+A Django view or API that:
+
+Accepts CSV uploads
+
+Runs train_model.py on click
+
+Updates a stored model file (e.g., model.pkl)
+
+Save training stats for display
+
+Use job queue (e.g., Celery) if it takes time
